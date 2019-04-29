@@ -9,7 +9,8 @@
 import UIKit
 public class Autocomplete {
     public class func setupAutocompleteForViewcontroller<T: UIViewController>(viewController: T) where T: AutocompleteDelegate {
-
+        let autoCompleteViewController = initAutoCompleteVC();
+        autoCompleteViewController.delegate = viewController;
         setupUI(autoCompleteViewController, parentViewController: viewController)
 
     }
@@ -20,21 +21,27 @@ public class Autocomplete {
         setupUI(autoCompleteViewController, parentViewController: viewController)
         
     }
-    
+
     fileprivate class func initAutoCompleteVC() -> AutoCompleteViewController {
         let podBundle: Bundle = Bundle(for: Autocomplete.self)
+        let storyboard = UIStoryboard(name: "Autocomplete", bundle: podBundle)	
 
-        let storyboard = UIStoryboard(name: "Autocomplete", bundle: podBundle)
-        let autoCompleteViewController = storyboard.instantiateViewController(withIdentifier: "autocompleteScene") as! AutoCompleteViewController
-        
-        autoCompleteViewController.delegate = viewController
+        return storyboard.instantiateViewController(withIdentifier: "autocompleteScene") as! AutoCompleteViewController
+    }	
 
-        autoCompleteViewController.willMove(toParentViewController: viewController)
-        viewController.addChildViewController(autoCompleteViewController)
-        autoCompleteViewController.didMove(toParentViewController: viewController)
+     fileprivate class func setupUI(_ autoCompleteViewController: AutoCompleteViewController, parentViewController: UIViewController) {	
+        //Remove from any superview and super viewcontrollers	
+        autoCompleteViewController.view.removeFromSuperview()	
+        autoCompleteViewController.removeFromParent()	
 
-        autoCompleteViewController.view.willMove(toSuperview: viewController.view)
-        viewController.view.addSubview(autoCompleteViewController.view)
+
+        autoCompleteViewController.willMove(toParent: parentViewController)	      
+        parentViewController.addChild(autoCompleteViewController)	
+        autoCompleteViewController.didMove(toParent: parentViewController)	        
+
+        autoCompleteViewController.view.willMove(toSuperview: parentViewController.view)
+        parentViewController.view.addSubview(autoCompleteViewController.view)
+
         autoCompleteViewController.view.didMoveToSuperview()
 
     }
