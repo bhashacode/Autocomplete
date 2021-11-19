@@ -39,7 +39,7 @@ public class AutoCompleteViewController: UIViewController {
 
         self.height = self.delegate!.autoCompleteHeight()
         
-        let frame =  self.textField?.superview?.convert((self.textField?.frame)!, to: self.textField?.superview?.superview?.superview)
+        let frame =  self.textField?.superview?.convert((self.textField?.frame)!, to: self.textField?.superview?.superview?.superview?.superview?.superview?.superview)
         
        
         print("TextFiled Frame ", textField?.layer.frame)
