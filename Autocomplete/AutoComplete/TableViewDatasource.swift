@@ -31,7 +31,7 @@ extension AutoCompleteViewController: UITableViewDataSource {
         let data = items[indexPath.row]
         self.cellDataAssigner!(cell, data)
         
-        cell.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+        // cell.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
         
         return cell
     }

@@ -21,6 +21,7 @@ public class AutoCompleteViewController: UIViewController {
     internal var cellDataAssigner: ((_ cell: UITableViewCell, _ data: AutocompletableOption) -> Void)?
     internal var textField: UITextField?
     internal let animationDuration: TimeInterval = 0.2
+    internal var ogFrame: CGRect!
 
     //MARK: - private properties
     private var autocompleteThreshold: Int?
@@ -45,7 +46,7 @@ public class AutoCompleteViewController: UIViewController {
         print("TextFiled Frame ", textField?.layer.frame)
         
         self.view.frame = CGRect(x: (frame?.minX)! + 10, y: (frame?.minY)! - self.height , width: self.textField!.frame.size.width - 20,height: self.height)
-        
+        self.ogFrame = self.view.frame
         
         
 
@@ -62,7 +63,7 @@ public class AutoCompleteViewController: UIViewController {
         
         self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: (self.textField?.frame.size.width)!, height: 0.0001))
         
-        self.tableView.transform = CGAffineTransform(rotationAngle: -CGFloat.pi)
+        // self.tableView.transform = CGAffineTransform(rotationAngle: -CGFloat.pi)
         
         
         self.tableView.backgroundColor = UIColor.clear
@@ -81,6 +82,18 @@ public class AutoCompleteViewController: UIViewController {
                 self.view.isHidden = false
                 guard let searchTerm = textField.text else { return }
                 self.autocompleteItems = self.delegate!.autoCompleteItemsForSearchTerm(term: searchTerm)
+                
+                let contentHeight = CGFloat(self.autocompleteItems!.count) * CGFloat(self.cellHeight!)
+                
+                self.view.frame.origin.y = ogFrame.origin.y + max(0.0, self.height - contentHeight)
+                self.view.frame.size.height = min(
+                    contentHeight,
+                    self.maxHeight,
+                    self.height
+                )
+                
+                self.tableView.reloadData()
+                
 //                UIView.animate(withDuration: self.animationDuration,
 //                    delay: 0.0,
 //                    options: [.curveEaseIn,.curveEaseOut],
