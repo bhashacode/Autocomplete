@@ -42,7 +42,7 @@ public extension AutocompleteDelegate {
         return assigner
     }
     
-    func maxHeightForController() -> CGFloat{
+    func maxHeightForController() -> CGFloat?{
         return nil
     }
 }
