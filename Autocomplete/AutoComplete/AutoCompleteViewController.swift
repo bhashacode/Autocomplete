@@ -58,7 +58,7 @@ public class AutoCompleteViewController: UIViewController {
 
         self.cellHeight = self.delegate!.heightForCells()
         // not to go beyond bound height if list of items is too big
-        self.maxHeight = UIScreen.main.bounds.height - self.view.frame.minY
+        self.maxHeight = self.delegate?.maxHeightForController() ?? (UIScreen.main.bounds.height - self.view.frame.minY)
         
         
         self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: (self.textField?.frame.size.width)!, height: 0.0001))
@@ -79,6 +79,14 @@ public class AutoCompleteViewController: UIViewController {
         let numberOfCharacters = textField.text?.characters.count
         if let numberOfCharacters = numberOfCharacters {
             if numberOfCharacters > self.autocompleteThreshold! {
+                
+                if self.view.isHidden{
+                    let frame =  self.textField?.superview?.convert((self.textField?.frame)!, to: self.textField?.superview?.superview?.superview?.superview?.superview?.superview)
+                    print("Adjusted TextFiled Frame ", textField.layer.frame)
+                    self.view.frame = CGRect(x: (frame?.minX)! + 10, y: (frame?.minY)! - self.height , width: self.textField!.frame.size.width - 20,height: self.height)
+                    self.ogFrame = self.view.frame
+                }
+                
                 self.view.isHidden = false
                 guard let searchTerm = textField.text else { return }
                 self.autocompleteItems = self.delegate!.autoCompleteItemsForSearchTerm(term: searchTerm)

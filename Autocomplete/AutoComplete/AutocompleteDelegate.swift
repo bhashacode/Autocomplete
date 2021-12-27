@@ -17,6 +17,7 @@ public protocol AutocompleteDelegate: class {
 
     func nibForAutoCompleteCell() -> UINib
     func heightForCells() -> CGFloat
+    func maxHeightForController() -> CGFloat?
     func getCellDataAssigner() -> ((UITableViewCell, AutocompletableOption) -> Void)
 }
 
@@ -39,5 +40,9 @@ public extension AutocompleteDelegate {
         }
         
         return assigner
+    }
+    
+    func maxHeightForController() -> CGFloat{
+        return nil
     }
 }
