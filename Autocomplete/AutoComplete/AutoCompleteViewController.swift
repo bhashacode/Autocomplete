@@ -45,7 +45,12 @@ public class AutoCompleteViewController: UIViewController {
        
         print("TextFiled Frame ", textField?.layer.frame)
         
-        self.view.frame = CGRect(x: (frame?.minX)! + 10, y: (frame?.minY)! - self.height , width: self.textField!.frame.size.width - 20,height: self.height)
+        self.view.frame = CGRect(
+            x: (frame?.minX)! + 10,
+            y: max((frame?.minY)! - self.height, 0),
+            width: self.textField!.frame.size.width - 20,
+            height: self.height
+        )
         self.ogFrame = self.view.frame
         
         
@@ -83,7 +88,11 @@ public class AutoCompleteViewController: UIViewController {
                 if self.view.isHidden{
                     let frame =  self.textField?.superview?.convert((self.textField?.frame)!, to: self.textField?.superview?.superview?.superview?.superview?.superview?.superview)
                     print("Adjusted TextFiled Frame ", textField.layer.frame)
-                    self.view.frame = CGRect(x: (frame?.minX)! + 10, y: (frame?.minY)! - self.height , width: self.textField!.frame.size.width - 20,height: self.height)
+                    self.view.frame = CGRect(
+                        x: (frame?.minX)! + 10,
+                        y: max((frame?.minY)! - self.height, 0),
+                        width: self.textField!.frame.size.width - 20,
+                        height: self.height)
                     self.ogFrame = self.view.frame
                 }
                 
@@ -93,7 +102,7 @@ public class AutoCompleteViewController: UIViewController {
                 
                 let contentHeight = CGFloat(self.autocompleteItems!.count) * CGFloat(self.cellHeight!)
                 
-                self.view.frame.origin.y = ogFrame.origin.y + max(0.0, self.height - contentHeight)
+                self.view.frame.origin.y = max(0, ogFrame.origin.y + max(0.0, self.height - contentHeight))
                 self.view.frame.size.height = min(
                     contentHeight,
                     self.maxHeight,
