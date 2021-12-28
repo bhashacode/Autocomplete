@@ -110,6 +110,8 @@ public class AutoCompleteViewController: UIViewController {
                 )
                 
                 self.tableView.reloadData()
+                self.tableView.setContentOffset(.zero, animated: false)
+                
                 
 //                UIView.animate(withDuration: self.animationDuration,
 //                    delay: 0.0,
